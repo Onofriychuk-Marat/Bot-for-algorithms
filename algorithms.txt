@@ -1,0 +1,406 @@
+Решето эратосфена
+-*-
+recheto
+-*-
+100
+-*-
+Поиск простых чисел
+Сложность алгоритма: O(n*log2(log2(n)))
+
+def recheto(size):
+    a = [x for x in range(size + 1)]
+
+    a[1] = i = 0
+    while i <= size:
+        if a[i] != 0:
+            j = i + i
+            while j <= size:
+                a[j] = 0
+                j = j + i
+        i += 1
+
+    res = list(set(a) - {0})
+    res.sort()
+    return res
+____________________
+Алгоритм Евклида
+-*-
+gcd
+-*-
+100, 30
+-*-
+Поиск наибольшего общего делителя(рекурсия)
+Сложность алгоритма: O(log2(n))(но это не точно)
+
+def gcd(a, b):
+    return a if b == 0 else gcd(b, a % b)
+-*-
+Сложность алгоритма: O(log2(n))(но это не точно)
+
+def gcd(a, b):
+    if a == b:
+        return a
+    elif a > b:
+        return gcd(a - b, b)
+    elif a < b:
+        return gcd(a, b - a)
+____________________
+Быстрое возведение в степень
+-*-
+pow
+-*-
+2, 10
+-*-
+Быстрое возведение в степень(рекурсия)
+Сложность алгоритма: O(log2(n))
+
+def pow(a, n):
+    if n == 0:
+        return 1
+    elif n % 2 == 0:
+        return pow(a ** 2, n / 2)
+    else:
+        return pow(a, n - 1) * a
+____________________
+Генерация случайных 2-ых чисел
+-*-
+bin
+-*-
+5
+-*-
+Генерация случайных двоичных чисел(рекурсия)
+Сложность алгоритма: O(2^n)
+
+mas = []
+def bin(m, prefix=""):
+    if m == 0:
+        mas.append(prefix)
+        return
+    bin(m - 1, prefix + "0")
+    bin(m - 1, prefix + "1")
+-*-
+Сложность алгоритма: O(2^n)
+
+mas = []
+def bin(m, prefix=""):
+    # С помощью циклов
+    if m == 0:
+        mas.append(prefix)
+    else:
+        for digit in "0", "1":
+            get(m - 1, prefix + digit)
+____________________
+Генерация случайных чисел
+-*-
+generator
+-*-
+3, 3
+-*-
+Генерация случайных чисел(рекурсия)
+Сложность алгоритма: не знаю, если ты знаешь поделись инфой
+
+mas = []
+def generator(n, m, prefix=[]):
+    if m == 0:
+        mas.append(prefix)
+        return
+    prefix = prefix or []
+    for digit in range(n):
+        if not digit in prefix:
+            prefix.append(digit)
+            generator(n, m - 1, prefix)
+            prefix.pop()
+____________________
+Разложение числа на множители
+-*-
+decomposition
+-*-
+100
+-*-
+Разложение числа на множители
+Сложность алгоритма: O(√n)
+
+def decomposition(x):
+    mas = []
+    divisor = 2
+
+    while x != 1:
+        if x%divisor == 0:
+            mas.append(divisor)
+            x /= divisor
+        else:
+            divisor += 1
+	return mas
+____________________
+Сортировка ставками
+-*-
+insert_sort
+-*-
+[3, 1, 5, 2, 4]
+-*-
+Сортировка ставками
+Сложность алгоритма: O(n^2)
+
+def insert_sort(mas):
+    size = len(mas)
+    for i in range(1, size):
+        k = i
+        while k > 0 and mas[k] < mas[k - 1]:
+            mas[k], mas[k - 1] = mas[k - 1], mas[k]
+            k -= 1
+    return mas
+____________________
+Сортировка выбором
+-*-
+choice_sort
+-*-
+[3, 1, 5, 2, 4]
+-*-
+Сортировка выбором
+Сложность алгоритма: O(n^2)
+
+def choice_sort(mas):
+    size = len(mas)
+    for i in range(0, size - 1):
+        for k in range(i + 1, size):
+            if mas[i] > mas[k]:
+                mas[i], mas[k] = mas[k], mas[i]
+    return mas
+____________________
+Сортировка пузырьком
+-*-
+bubble_sort
+-*-
+[3, 1, 5, 2, 4]
+-*-
+Сортировка пузырьком
+Сложность алгоритма: O(n^2)
+
+def bubble_sort(mas):
+    size = len(mas)
+    for i in range(1, size):
+        for k in range(0, size - i):
+            if mas[k] > mas[k + 1]:
+                mas[k], mas[k + 1] = mas[k + 1], mas[k]
+    return mas
+____________________
+Алгоритм Том Хора
+-*-
+tom_choara
+-*-
+[1, 9, 4, 8, 2, 3, 7, 5, 3, 5, 6, 0]
+-*-
+Алгоритм Том Хора(сортировка)
+Сложность алгоритма: O(n*log2(n))
+
+def tom_choara(A):
+	if (len(A) <= 1):
+		return
+	barrier = A[0]
+	L = []
+	M = []
+	R = []
+	for i in A:
+		if i < barrier:
+			L.append(i)
+		elif i == barrier:
+			M.append(i)
+		else:
+			R.append(i)
+	tom_choara(L)
+	tom_choara(R)
+	k = 0
+	for i in L+M+R:
+		A[k] = i
+		k += 1
+	return A
+____________________
+Бинарный поиск в строке
+-*-
+bin_search
+-*-
+[1, 1, 2, 3, 4, 4, 4, 5, 6, 7], 4
+-*-
+Бинарный поиск в строке(ищем 1 и последнее вхождение в отсортированном массиве)
+Сложность алгоритма: O(log2(n))
+
+def right_search(A, key):
+	left = -1
+	right = len(A)
+	while right - left > 1:
+	    middle = (left + right) // 2
+		if A[middle] <= key:
+			left = middle
+		else:
+			right = middle
+	return right - 1
+
+
+def left_search(A, key):
+	left = -1
+	right = len(A)
+	while right - left > 1:
+		middle = (left + right) // 2
+		if A[middle] < key:
+			left = middle
+		else:
+			right = middle
+	return left + 1
+
+
+def bin_search(a, key):
+	return left_search(a, key), right_search(a, key)
+____________________
+Подсчет всевозможных путей
+-*-
+kuznechick
+-*-
+8, [True, True, True, True, False, False, True, False, True]
+-*-
+Алгоритм подсчета количества всевозможных путей(динамическое программирование)
+Первый аргумент это номер города в который мы едем.
+Второй аргумент это булевый лист, где false это
+город в который не поехать и из которого не уехать, true наоборот.
+Количество городов в которые мы можем поехать из города равняется трем.
+В результате функция возвращает количество путей в город n.
+
+Сложность алгоритма: O(n)
+
+def kuznechick(n, list_stat):
+	a = [0, 1, int(list_stat[0])] + [0] * n
+    for i in range(3, n+1):
+		if list_stat[i]:
+			a[i] = a[i-1] + a[i-2] + a[i-3]
+	return a[n]
+____________________
+Поиск самого дешевого маршрута
+-*-
+cheap_trip
+-*-
+7, [1, 1, 1, 5, 1, 5, 1, 1]
+-*-
+Поиск самого дешевого маршрута(динамическое программирование)
+Первый аргумент это номер города в который мы едем.
+Второй аргумент это массив цен поздок в города.
+Ехать можно только в два ближайших города.
+В результате функция возвращает самый маленький
+price от города а в город б
+
+Сложность алгоритма: O(n)
+
+def cheap_trip(n, list_price):
+	good_price = {}
+	c = [list_price[1], list_price[1] + list_price[2]] + [0] * (n - 1)
+	good_price[1] = list_price[1]
+	good_price[2] = list_price[1] + list_price[2]
+	for i in range(2, n + 1):
+		c[i] = list_price[i] + min(c[i-1], c[i-2])
+		good_price[i-1 if c[i-1] < c[i-2] else i-2] = c[i]
+	return c[n]
+____________________
+Наиб. общая подпоследовательности
+-*-
+lcs
+-*-
+[2, 3, 8, 4, 5, 1, 2, 3, 24], [3, 4, 5]
+-*-
+Поиск наибольшей общей подпоследовательности(динамическое программирование)
+Сложность алгоритма: O(n*m), n - size a, m - size b
+
+def lcs(a, b):
+	F = [[0] * (len(b) + 1) for i in range(len(a) + 1)]
+	for i in range(1, len(a) + 1):
+		for j in range(1, len(b) + 1):
+			if a[i-1] == b[j-1]:
+				F[i][j] = 1 + F[i-1][j-1]
+			else:
+				F[i][j] = max(F[i-1][j], F[i][j-1])
+	return F[-1][-1]
+____________________
+Наиб. возв. подпоследовательности
+-*-
+gis
+-*-
+[0, 0, 0, 0, 8, 9, 1, 2, 3, 6, 10, 0, 9, 10, 11]
+-*-
+Поиск наибольшей возврастающей подпоследовательности(динмаическое программироание)
+Сложность алгоритма: O(n^2)
+
+def gis(a):
+	f = [0] * (len(a) + 1)
+	for i in range(1, len(a) + 1):
+		m = 0
+		for j in range(0, i):
+			if a[i - 1] > a[j] and f[j] > m:
+				m = f[j]
+		f[i] = m + 1
+    return f[len(a)]
+____________________
+Алгоритм Левенштейна
+-*-
+levenstein
+-*-
+'моlоkо', 'волоко'
+-*-
+Алгоритм Левенштейна(поиск минимальной правки строки)(динамическое программирование)
+Сложность алгоритма: O(n*m), n - size A, m - size B
+
+def levenstein(a, b):
+	f = [[i+j if i*j == 0 else 0 for j in range(len(b)+1)] for i in range(len(a)+1)]
+	for i in range(1, len(a) + 1):
+		for j in range(1, len(b) + 1):
+			if a[i-1] == b[j-1]:
+				f[i][j] = f[i-1][j-1]
+			else:
+				f[i][j] = 1 + min(f[i-1][j], f[i][j-1], f[i-1][j-1])
+	return f[len(a)][len(b)]
+____________________
+Алгоритм Кнут Морис Прат
+-*-
+knut_moris_prat
+-*-
+'abbaabbabcccccccabbaabbab', 'abbaab'
+-*-
+Алгоритм Кнут Морис Прат(поиск подстроки в строке)(динамическое программирование)
+В качесте результата функция возвращает все индексы
+начальных символов подстроки в строке
+
+Сложность алгоритма: O(n+n)
+
+def prefix_sufix(a):
+	p = [0] * len(a)
+	size_a = len(a)
+	j = 0
+	i = 1
+
+	while i < size_a:
+		if a[i] == a[j]:
+			j += 1
+			p[i] = j
+			i += 1
+		elif j == 0:
+			i += 1
+		else: # j != 0
+			j = p[j - 1]
+	return p
+
+def knut_moris_prat(a, sub):
+	p = prefix_sufix(sub)
+	indices = []
+	size_s = len(a)
+	size_sub = len(sub)
+	i = 0
+	j = 0
+
+	while i < size_s:
+		if j == size_sub:
+			indices.append(i - j)
+			j = 0
+		elif a[i] == sub[j]:
+			i += 1
+	    	j += 1
+		elif j == 0:
+			i += 1
+		else:
+			j = p[j - 1]
+	return indices

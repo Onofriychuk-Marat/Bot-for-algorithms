@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# Импортируем все необходимые библиотеки
 import pprint
 import time
 import telebot
@@ -8,7 +9,7 @@ from library import *
 from telebot.types import Message
 from telebot import types
 
-TOKEN = ''
+TOKEN = '1215247311:AAH83InopzWWRuY2AttJUhlkynmevAJJlxs'
 textUser = ''
 descriptions = []
 names = []
@@ -18,6 +19,7 @@ mas = []
 
 bot = telebot.TeleBot(TOKEN)
 
+# Получаем сообщение от пользователя
 def getText(message, text): 
 	global textUser
 	bot.send_message(message.from_user.id, text)
@@ -26,19 +28,21 @@ def getText(message, text):
 		if textUser != '':
 			return textUser
 
-def getClick(message: Message, cort, text): #Функция выводит кнопки и получаем результат
-	global textUser #
-	keyboard = types.InlineKeyboardMarkup() #Создаем место куда будем кидать наши кнопки
-	for i in range(len(cort)): #
-			keyboard.add(types.InlineKeyboardButton(text=cort[i], callback_data=cort[i])) #кидаем наши кнопки
-	bot.send_message(message.from_user.id, text=text, reply_markup=keyboard) #отпарвляем их пользователю
-	while True: #
-		if textUser != '': #
-			for i in range(len(cort)): #
-				if cort[i] == textUser: #
-					textUser = '' #
-					return i #возвращаем индекс нашего выбранного объекта из списка
+# Получаем индекс нажатой кнопки
+def getClick(message: Message, cort, text):
+	global textUser
+	keyboard = types.InlineKeyboardMarkup()
+	for i in range(len(cort)):
+			keyboard.add(types.InlineKeyboardButton(text=cort[i], callback_data=cort[i]))
+	bot.send_message(message.from_user.id, text=text, reply_markup=keyboard)
+	while True:
+		if textUser != '':
+			for i in range(len(cort)):
+				if cort[i] == textUser:
+					textUser = ''
+					return i
 
+# Запускаем выбранный алгоритм
 def run_code(message, select):
 	option = getClick(message, ('Дефолтные значения', 'Мои значения'), 'Режим:')
 	if option == 0:
@@ -49,6 +53,7 @@ def run_code(message, select):
 		text += str(eval(f'{names[select]}()\n'))
 	bot.send_message(message.from_user.id, text)
 
+# Показываем код выбранного алгоритма
 def show_code(message, select):
 	text = f'{descriptions[select]}\n\n'
 	for i in range(0, len(functions[select])):
@@ -59,9 +64,7 @@ def show_code(message, select):
 	if option == 0:
 		run_code(message, select)
 
-def favorites(message):
-	pass
-
+# Меню бота
 def menu(message):
 	option = getClick(message, ['Алгоритмы', 'Помощь'], 'Меню')
 	if option == 0:

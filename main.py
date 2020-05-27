@@ -8,7 +8,7 @@ from library import *
 from telebot.types import Message
 from telebot import types
 
-TOKEN = '1215247311:AAH83InopzWWRuY2AttJUhlkynmevAJJlxs'
+TOKEN = ''
 textUser = ''
 descriptions = []
 names = []
